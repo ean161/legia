@@ -13,7 +13,7 @@ $(document).ready(function() {
         let oldState = staffChecks.attr("checked");
         staffChecks.attr("checked", !oldState);
 
-        $("#select-all-btn").text(!oldState ? "Bỏ chọn tất cả" : "Chọn tất cả");
+        $("#select-all-btn").text(!oldState ? "Bỏ chọn" : "Chọn hết");
     });
 
     $.getJSON("/legia/hrm/list?page=0&size=1", function (res) {
