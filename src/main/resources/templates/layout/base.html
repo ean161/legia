@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:fragment="layout(content, pageTitle)">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <script>
+            const htmlElement = document.documentElement;
+            htmlElement.classList.add(localStorage.getItem("theme") || "uk-theme-zinc");
+        </script>
+        <title th:text="${'Ean | ' + pageTitle}">Ean</title>
+        <link rel="icon" type="image/png" th:href="@{/assets/images/app-window-mac.png}" />
+        <!-- <link rel="icon" type="image/x-icon" href="/assets/images/logo.jpg"> -->
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/franken-ui@2.0.0/dist/css/core.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.0-next.6/dist/js/core.iife.js" type="module"></script>
+        <script src="https://cdn.jsdelivr.net/npm/franken-ui@2.1.0-next.6/dist/js/icon.iife.js" type="module"></script>
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <link rel="stylesheet" href="/assets/_astro/main.css">
+        <script src="/assets/_astro/core.iife.BtHbjxGz.js" type="module"></script>
+        <script src="/assets/_astro/icon.iife.CRFl9c9T.js" type="module"></script>
+        <link rel="stylesheet" href="/assets/_astro/authentication.tX3ha87v.css">
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+        <script src="/assets/js/script.js"></script>
+    </head>
+    <body class="bg-background font-geist-sans text-foreground antialiased md:block">
+        <div class="flex h-9 items-center border-b border-border px-2 py-1 shadow-sm">
+            <nav class="flex space-x-1 text-sm">
+                <span class="md:hidden px-3 py-1 font-bold" id="side-menu-btn">
+                    Menu
+                </span>
+                <span class="hidden md:block px-3 py-1 font-bold">Ean</span>
+                <a class="px-3 py-1" href="#">Giao diện</a>
+                <div class="uk-drop uk-dropdown" uk-dropdown="mode: click; pos: bottom-left">
+                    <ul class="uk-dropdown-nav uk-nav">
+                        <li>
+                            <a class="uk-drop-close justify-between" onclick="dark(); return false;">Tối</a>
+                        </li>
+                        <li>
+                            <a class="uk-drop-close justify-between" onclick="light(); return false;">Sáng</a>
+                        </li>
+                    </ul>
+                </div>
+                <span th:if="${session.user != null}" class="px-3 py-1" id="balanceDisplay" th:text="${session.user.balanceDisplay + ' vnd'}"></span>
+            </nav>
+        </div>
+
+        <div id="modal-demo" class="uk-flex-top" data-uk-modal>
+            <div class="uk-modal-dialog uk-margin-auto-vertical">
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Modal title</h2>
+                </div>
+                <div class="uk-modal-body space-y-4">
+                    <div class="space-y-2">
+                        <label class="uk-form-label" for="ip-modal">Input 1</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="ip-modal" placeholder="Type sth" />
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-btn uk-btn-primary" type="button">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 md:grid-cols-5">
+            <div class="hidden space-y-4 py-4 md:block" id="side-menu">
+                <div class="px-3 py-2">
+                    <h2 class="mb-2 px-3 text-lg font-semibold tracking-tight">Chung</h2>
+                    <ul class="uk-nav uk-nav-secondary">
+                        <li>
+                            <a class="font-medium" href="/" uk-toggle>
+                                <span class="mr-2 size-4">
+                                    <uk-icon icon="box"></uk-icon>
+                                </span>
+                                Trang chủ
+                            </a>
+                        </li>
+                        <th:block th:if="${session.user != null}">
+                            <li>
+                                <a class="font-medium" href="/transaction" uk-toggle>
+                                    <span class="mr-2 size-4">
+                                        <uk-icon icon="wallet-minimal"></uk-icon>
+                                    </span>
+                                    Ví của tôi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="font-medium" href="/logout" uk-toggle>
+                                    <span class="mr-2 size-4">
+                                        <uk-icon icon="octagon-x"></uk-icon>
+                                    </span>
+                                    Đăng xuất
+                                </a>
+                            </li>
+                        </th:block>
+                        <th:block th:if="${session.user == null}">
+                            <li>
+                                <a class="font-medium" href="/auth?type=register" uk-toggle>
+                                    <span class="mr-2 size-4">
+                                        <uk-icon icon="user-round-plus"></uk-icon>
+                                    </span>
+                                    Đăng ký
+                                </a>
+                            </li>
+                            <li>
+                                <a class="font-medium" href="/auth?type=login" uk-toggle>
+                                    <span class="mr-2 size-4">
+                                        <uk-icon icon="scan-face"></uk-icon>
+                                    </span>
+                                    Đăng nhập
+                                </a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+                <div class="px-3 py-2" th:if="${session.user != null}">
+                    <h2 class="mb-2 px-3 text-lg font-semibold tracking-tight">Tài nguyên</h2>
+                    <ul class="uk-nav uk-nav-secondary">
+                        <li th:each="l : ${session.user.validLicenses}" th:if="${l.title.length() > 0}">
+                            <a class="font-medium" th:href="${l.directory}" uk-toggle>
+                                <span class="mr-2 size-4">
+                                    <uk-icon th:attr="icon=${l.icon}"></uk-icon>
+                                </span>
+                                <span th:text="${l.title}"></span>
+                            </a>
+                        </li>
+                        <li th:if="${#lists.isEmpty(session.user.validLicenses)}">
+                            <span class="font-medium" uk-toggle>
+                                <span class="mr-2 size-4">
+                                    <uk-icon icon="no"></uk-icon>
+                                </span>
+                                <span>&ensp;Không có</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <th:block th:replace="${content}"></th:block>
+        </div>
+        <script src="/assets/js/htmx@2.0.0/htmx.min.js"></script>
+    </body>
+</html>

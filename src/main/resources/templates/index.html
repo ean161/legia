@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <th:block th:replace="~{layout/base :: layout(~{::content}, 'Home')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li th:each="serviceCate : ${services}" class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="mt-6 space-y-1">
+                                    <h2 class="text-2xl font-semibold tracking-tight" th:text="${serviceCate.title}"></h2>
+                                    <p class="text-muted-foreground text-sm" th:text="${serviceCate.description}"></p>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div class="grid grid-cols-2 md:grid-cols-6 gap-x-4">
+                                    <!-- single -->
+                                    <a class="space-y-3" th:each="service : ${serviceCate.services}" th:href="${service.url}">
+                                        <div class="uk-rounded uk-anmt-toggle aspect-square w-full overflow-hidden">
+                                            <img class="transition-transform duration-200 hover:scale-105" th:src="${service.thumbnail}" alt="">
+                                        </div>
+                                        <div class="space-y-1 text-sm">
+                                            <h3 class="font-medium leading-none" th:text="${service.title}"></h3>
+                                            <p class="text-muted-foreground text-xs" th:text="${service.description}"></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</html>

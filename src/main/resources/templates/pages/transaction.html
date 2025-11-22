@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <th:block th:replace="~{layout/base :: layout(~{::content}, 'Transaction')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <h2 class="text-2xl font-semibold tracking-tight">Ví của tôi</h2>
+                                        <p class="text-sm text-muted-foreground">
+                                            Quản lý dòng tiền và ví của bạn
+                                        </p>
+                                    </div>
+                                    <div class="space-x-1 space-y-1">
+                                        <button class="uk-button uk-button-secondary" id="withdraw-btn">
+                                            Rút tiền
+                                        </button>
+                                        <button class="uk-button uk-button-primary" id="banking-deposit-btn">
+                                            Nạp tiền
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div>
+                                    <table id="list" class="table cell-border hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Dịch vụ</th>
+                                                <th>Số tiền</th>
+                                                <th>Ghi chú</th>
+                                                <th>Trạng thái</th>
+                                                <th>Ngày tạo</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="banking-deposit" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Nạp tiền</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <p>- Hãy quét mã bên để chuyển khoản</p>
+                                <p>- Nạp tự động, vui lòng đợi 1 phút để hệ thống xác nhận</p>
+                                <p>- Nội dung nạp tiền của bạn là <strong th:text="${'e6a' + session.user.id + 'e6a'}"></strong>. Hệ thống tự điền, không đổi nội dung chuyển khoản</p>
+                            </div>
+                            <img th:src="${'https://apiqr.web2m.com/api/generate/' + acbBank + '/' + acbAccount + '/' + acbName + '?amount=&memo=e6a' + session.user.id + 'e6a&is_mask=0&bg='}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="withdraw" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Rút tiền</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="method">Phương thức nhận</label>
+                            <div class="uk-form-controls">
+                                <select class="uk-select" id="method">
+                                    <option value="">Chọn phương thức nhận</option>
+                                    <option value="banking">Ngân hàng</option>
+                                    <option value="card">Thẻ di động</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="banking-form" class="space-y-4 hidden">
+                            <div class="space-y-2">
+                                <label class="uk-form-label" for="bankType">Ngân hàng nhận</label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" id="bankType">
+                                        <option value="">Chọn ngân hàng nhận</option>
+                                        <option value="ICB">Ngân hàng TMCP Công thương Việt Nam</option>
+                                        <option value="VCB">Ngân hàng TMCP Ngoại Thương Việt Nam</option>
+                                        <option value="BIDV">Ngân hàng TMCP Đầu tư và Phát triển Việt Nam</option>
+                                        <option value="VBA">Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam</option>
+                                        <option value="OCB">Ngân hàng TMCP Phương Đông</option>
+                                        <option value="MBB">Ngân hàng TMCP Quân đội</option>
+                                        <option value="TCB">Ngân hàng TMCP Kỹ thương Việt Nam</option>
+                                        <option value="ACB">Ngân hàng TMCP Á Châu</option>
+                                        <option value="VPB">Ngân hàng TMCP Việt Nam Thịnh Vượng</option>
+                                        <option value="TPB">Ngân hàng TMCP Tiên Phong</option>
+                                        <option value="STB">Ngân hàng TMCP Sài Gòn Thương Tín</option>
+                                        <option value="HDB">Ngân hàng TMCP Phát triển Thành phố Hồ Chí Minh</option>
+                                        <option value="VCCB">Ngân hàng TMCP Bản Việt</option>
+                                        <option value="SCB">Ngân hàng TMCP Sài Gòn</option>
+                                        <option value="VIB">Ngân hàng TMCP Quốc tế Việt Nam</option>
+                                        <option value="SHB">Ngân hàng TMCP Sài Gòn - Hà Nội</option>
+                                        <option value="EIB">Ngân hàng TMCP Xuất Nhập khẩu Việt Nam</option>
+                                        <option value="MSB">Ngân hàng TMCP Hàng Hải</option>
+                                        <option value="CAKE"> TMCP Việt Nam Thịnh Vượng - Ngân hàng số CAKE by VPBank</option>
+                                        <option value="Ubank"> TMCP Việt Nam Thịnh Vượng - Ngân hàng số Ubank by VPBank</option>
+                                        <option value="SGICB">Ngân hàng TMCP Sài Gòn Công Thương</option>
+                                        <option value="BAB">Ngân hàng TMCP Bắc Á</option>
+                                        <option value="PVCB">Ngân hàng TMCP Đại Chúng Việt Nam</option>
+                                        <option value="Oceanbank">Ngân hàng Thương mại TNHH MTV Đại Dương</option>
+                                        <option value="NCB">Ngân hàng TMCP Quốc Dân</option>
+                                        <option value="SHBVN">Ngân hàng TNHH MTV Shinhan Việt Nam</option>
+                                        <option value="ABB">Ngân hàng TMCP An Bình</option>
+                                        <option value="VAB">Ngân hàng TMCP Việt Á</option>
+                                        <option value="NAB">Ngân hàng TMCP Nam Á</option>
+                                        <option value="PGB">Ngân hàng TMCP Xăng dầu Petrolimex</option>
+                                        <option value="VIETBANK">Ngân hàng TMCP Việt Nam Thương Tín</option>
+                                        <option value="BVB">Ngân hàng TMCP Bảo Việt</option>
+                                        <option value="SEAB">Ngân hàng TMCP Đông Nam Á</option>
+                                        <option value="COOPBANK">Ngân hàng Hợp tác xã Việt Nam</option>
+                                        <option value="LPB">Ngân hàng TMCP Bưu Điện Liên Việt</option>
+                                        <option value="KLB">Ngân hàng TMCP Kiên Long</option>
+                                        <option value="KBank">Ngân hàng Đại chúng TNHH Kasikornbank</option>
+                                        <option value="GPB">Ngân hàng Thương mại TNHH MTV Dầu Khí Toàn Cầu</option>
+                                        <option value="CBB">Ngân hàng Thương mại TNHH MTV Xây dựng Việt Nam</option>
+                                        <option value="CIMB">Ngân hàng TNHH MTV CIMB Việt Nam</option>
+                                        <option value="DBS"> DBS Bank Ltd - Chi nhánh Thành phố Hồ Chí Minh</option>
+                                        <option value="DOB">Ngân hàng TMCP Đông Á</option>
+                                        <option value="KBHCM">Ngân hàng Kookmin - Chi nhánh Thành phố Hồ Chí Minh</option>
+                                        <option value="KBHN">Ngân hàng Kookmin - Chi nhánh Hà Nội</option>
+                                        <option value="WVN">Ngân hàng TNHH MTV Woori Việt Nam</option>
+                                        <option value="VRB">Ngân hàng Liên doanh Việt - Nga</option>
+                                        <option value="SCVN">Ngân hàng TNHH MTV Standard Chartered Bank Việt Nam</option>
+                                        <option value="HLBVN">Ngân hàng TNHH MTV Hong Leong Việt Nam</option>
+                                        <option value="HSBC">Ngân hàng TNHH MTV HSBC (Việt Nam)</option>
+                                        <option value="IBK - HN">Ngân hàng Công nghiệp Hàn Quốc - Chi nhánh Hà Nội</option>
+                                        <option value="IBK - HCM">Ngân hàng Công nghiệp Hàn Quốc - Chi nhánh TP. Hồ Chí Minh</option>
+                                        <option value="IVB">Ngân hàng TNHH Indovina</option>
+                                        <option value="NHB HN">Ngân hàng Nonghyup - Chi nhánh Hà Nội</option>
+                                        <option value="UOB">Ngân hàng United Overseas - Chi nhánh TP. Hồ Chí Minh</option>
+                                        <option value="PBVN">Ngân hàng TNHH MTV Public Việt Nam</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="uk-form-label" for="bankNum">Số tài khoản</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="bankNum" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="card-form" class="space-y-4 hidden">
+                            <div class="space-y-2">
+                                <label class="uk-form-label" for="cardType">Nhà mạng</label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" id="cardType">
+                                        <option value="">Chọn nhà mạng</option>
+                                        <option value="Viettel">Viettel</option>
+                                        <option value="Mobifone">Mobifone</option>
+                                        <option value="Vinaphone">Vinaphone</option>
+                                        <option value="Garena">Garena</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="amount-form" class="space-y-2 hidden">
+                            <label class="uk-form-label" for="amount">Số tiền rút</label>
+                            <div class="uk-form-controls">
+                                <select class="uk-select" id="amount">
+                                    <option value="">Chọn số tiền</option>
+                                    <option value="50000">50,000</option>
+                                    <option value="100000">100,000</option>
+                                    <option value="200000">200,000</option>
+                                    <option value="500000">500,000</option>
+                                    <option value="1000000">1,000,000</option>
+                                </select>
+                            </div>
+                            <small><i>Do hệ thống có áp dụng tra soát dòng tiền nên số tiền rút không thể tự nhập, nếu muốn rút hết số tiền trong tài khoản hãy liên hệ hỗ trợ để thực hiện phương thức rút chậm, xin cảm ơn</i></small>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-primary" type="button" id="withdraw-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            
+            <script src="/assets/js/pages/transaction.js"></script>
+        </th:block>
+    </th:block>
+</html>

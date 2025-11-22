@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <th:block th:replace="~{layout/base :: layout(~{::content}, 'Lê Gia')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <h2 class="text-2xl font-semibold tracking-tight">Lê Gia</h2>
+                                        <p class="text-sm text-muted-foreground">
+                                            Cộng/trừ lương
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div>
+                                    <table id="list" class="table cell-border hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nhân viên</th>
+                                                <th>Ghi chú</th>
+                                                <th>Số tiền</th>
+                                                <th>Thời gian thêm</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-money" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Sửa cộng/trừ lương</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="ename">Nhân viên</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="ename" disabled />
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="enote">Ghi chú</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="enote"/>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="eamount">Số tiền</label>
+                            <div class="flex space-x-2">
+                                <div class="uk-form-controls w-1/4">
+                                    <select class="uk-select" id="etype">
+                                        <option value="">Chọn</option>
+                                        <option value="PLUS" class="text-green-500">CỘNG (+)</option>
+                                        <option value="SUB" class="text-red-500">TRỪ (-)</option>
+                                    </select>
+                                </div>
+                                <div class="uk-form-controls w-3/4">
+                                    <input class="uk-input" id="eamount" type="number" value="0"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right space-x-1">
+                        <button class="uk-button uk-button-primary" type="button" id="edit-money-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+
+            <script src="/assets/js/pages/legia/static_money.js"></script>
+        </th:block>
+    </th:block>
+</html>

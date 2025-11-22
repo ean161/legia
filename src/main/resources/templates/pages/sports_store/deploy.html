@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:replace="~{layout/base :: layout(~{::content}, 'Sports Store')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <h2 class="text-2xl font-semibold tracking-tight">Sports Store</h2>
+                                        <p class="text-sm text-muted-foreground">
+                                            Triển khai mã nguồn mới lên tên miền
+                                        </p>
+                                    </div>
+                                    <div class="space-x-1">
+                                        <button class="uk-button uk-button-primary" id="deploy-btn">
+                                            Tải lên
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div>
+                                    <table id="list" class="table cell-border hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Người triển khai</th>
+                                                <th>Dung lượng</th>
+                                                <th>Trạng thái</th>
+                                                <th>Ngày tạo</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="deploy" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Tải lên bản mới</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <div data-uk-form-custom="target: true" class="w-full">
+                                <input type="file" id="deploy-jar"/>
+                                <input class="uk-input" type="text" placeholder="Select jar file" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-primary" type="button" id="deploy-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+
+            <script src="/assets/js/pages/sports_store/deploy.js"></script>
+        </th:block>
+    </th:block>
+</html>

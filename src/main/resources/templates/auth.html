@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <th:block th:replace="~{layout/base :: layout(~{::content}, 'Auth')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <h2 class="text-2xl font-semibold tracking-tight" th:text="${typeTitle}"></h2>
+                                        <p class="text-sm text-muted-foreground">
+                                            Không chia sẻ thông tin đăng nhập với người lạ
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div>
+                                    <div class="md:grid md:grid-cols-2 md:space-x-4">
+                                        <div class="space-y-2">
+                                            <label class="uk-form-label" for="username">Tài khoản</label>
+                                            <input
+                                                class="uk-input"
+                                                id="username"
+                                                type="text"
+                                            >
+                                            <div class="uk-form-help text-muted-foreground">
+                                                Chứa chữ cái không dấu và số, từ 6 - 30 kí tự
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2 mt-4 md:mt-0">
+                                            <label class="uk-form-label" for="password">Mật khẩu</label>
+                                            <input
+                                                class="uk-input"
+                                                id="password"
+                                                type="password"
+                                            >
+                                            <div class="uk-form-help text-muted-foreground">
+                                                Chứa từ 6 kí tự
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input id="redirect" hidden/>
+                                    <div class="uk-text-right space-x-2">
+                                        <button th:if="${type == 'register'}" id="register-btn" class="uk-button uk-button-default" type="button">Đăng ký</button>
+                                        <button th:if="${type == 'login'}" id="login-btn" class="uk-button uk-button-primary" type="button">Đăng nhập</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <script src="/assets/js/auth.js"></script>
+        </th:block>
+    </th:block>
+</html>

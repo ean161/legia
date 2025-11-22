@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <th:block th:replace="~{layout/base :: layout(~{::content}, 'Lê Gia')}">
+        <th:block th:fragment="content">
+            <div class="col-span-5 border-l border-border lg:col-span-4">
+                <div class="px-8 py-6">
+                    <div class="flex-1">
+                        <ul id="component-nav" class="uk-switcher max-w-1xl">
+                            <li class="uk-active" id="uk-switcher-2" role="tabpanel" aria-labelledby="uk-switcher-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <h2 class="text-2xl font-semibold tracking-tight">Lê Gia</h2>
+                                        <p class="text-sm text-muted-foreground">
+                                            Nhân viên
+                                        </p>
+                                        
+                                    </div>
+                                    <div class="space-x-1 space-y-1">
+                                        <button class="uk-button uk-button-default" id="start-select-work-btn">
+                                            Vào ca
+                                        </button>
+                                        <button class="uk-button uk-button-danger" id="end-select-work-btn">
+                                            Kết ca
+                                        </button>
+<!--                                        <button class="uk-button uk-button-primary" id="select-all-btn">-->
+<!--                                            Bỏ chọn tất cả-->
+<!--                                        </button>-->
+                                        <button class="uk-button uk-button-primary" id="add-staff-btn">
+                                            Thêm nhân viên
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bg-border my-4 h-[1px] w-full"></div>
+                                <div style="width: 100% !important;">
+                                    <table id="list" class="table cell-border hover" data-page-length="50">
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="static-money-staff" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Cộng/trừ lương nhân viên</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="smname">Tên nhân viên</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="smname" disabled/>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="smnote">Ghi chú</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="smnote"/>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="smamount">Số tiền</label>
+                            <div class="flex space-x-2">
+                                <div class="uk-form-controls w-1/4">
+                                    <select class="uk-select" id="smtype">
+                                        <option value="">Chọn</option>
+                                        <option value="PLUS" class="text-green-500">CỘNG (+)</option>
+                                        <option value="SUB" class="text-red-500">TRỪ (-)</option>
+                                    </select>
+                                </div>
+                                <div class="uk-form-controls w-3/4">
+                                    <input class="uk-input" id="smamount" type="number" value="0"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-primary" type="button" id="static-money-staff-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add-staff" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Thêm nhân viên</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="name">Tên nhân viên</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="name" />
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="salary">Lương cơ bản</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="salary" type="number" value="0"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-primary" type="button" id="add-staff-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="statistic-staff" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title" id="sname"></h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2 mb-2" id="sdetail">
+                            <div class="flex items-center">
+                                <span class="size-4 mr-2"><uk-icon icon="coins"></uk-icon></span>
+                                <strong>Lương cơ bản:&ensp;</strong>
+                                <span id="ssalary"></span>
+                            </div>
+                            <!-- <div class="flex items-center">
+                                <span class="size-4 mr-2"><uk-icon icon="briefcase-business"></uk-icon></span>
+                                <strong>Ngày công:&ensp;</strong>
+                                <span id="sshifts-count"></span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="size-4 mr-2"><uk-icon icon="ban"></uk-icon></span>
+                                <strong>Ngày nghỉ:&ensp;</strong>
+                                <span id="soff-day-count"></span>
+                            </div> -->
+                            <table class="uk-table uk-table-divider">
+                                <thead>
+                                    <tr>
+                                        <th>Loại</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Hành chính</td>
+                                        <td id="swork-time"></td>
+                                        <td id="swork-time-salary"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tăng ca</td>
+                                        <td id="sover-time"></td>
+                                        <td id="sover-time-salary"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cộng/trừ</td>
+                                        <td id="sstatic-list"></td>
+                                        <td id="sstatic-list-total"></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">Tổng lương</th>
+                                        <th id="stotal-salary"></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="space-y-2 mt-2">
+                            <div class="uk-form-controls">
+                                <select class="uk-select" id="smonth">
+                                    <option value="">Chọn tháng</option>
+                                    <option th:each="month : ${months}" th:text="${month}" th:value="${month}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-staff" class="uk-flex-top" data-uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Sửa nhân viên</h2>
+                    </div>
+                    <div class="uk-modal-body space-y-4">
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="ename">Tên nhân viên</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="ename" />
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="uk-form-label" for="esalary">Lương cơ bản</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="esalary" type="number" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right space-x-1">
+                        <button class="uk-button uk-button-danger" id="delete-staff-btn">Xoá</button>
+                        <button class="uk-button uk-button-primary" type="button" id="static-money-staff-btn">Cộng/trừ</button>
+                        <button class="uk-button uk-button-primary" type="button" id="edit-staff-submit">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+            
+            <script src="/assets/js/pages/legia/hrm.js"></script>
+        </th:block>
+    </th:block>
+</html>
