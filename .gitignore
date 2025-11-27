@@ -27,6 +27,5 @@ build/
 !**/src/test/**/build/
 
 .vscode/
-*.properties
 deploy.sh
 *.sh
